@@ -51,6 +51,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/remeh/sizedwaitgroup"
+  packages = ["."]
+  revision = "4b44541c93591ee0e73747d6081e61bd8c58b5c7"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "314a259e304ff91bd6985da2a7149bbf91237993"
@@ -64,6 +70,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3a2e8aa6b90d20ce570890f6fd77396b52db93f2682e61d67bd708ddf47edeca"
+  inputs-digest = "efad9a689717f4dc083fd15da0063f450499b52f037aedb00032653b73e2150c"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/apex/log/handlers/cli"
 	"github.com/cloudflare/ahocorasick"
 	"github.com/fatih/color"
+	"github.com/remeh/sizedwaitgroup"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -81,9 +83,9 @@ func main() {
 
 	fileList := getFiles(cleanPath)
 
-	var wg sync.WaitGroup
+	wg := sizedwaitgroup.New(runtime.NumCPU())
 	for _, file := range fileList {
-		wg.Add(1)
+		wg.Add()
 		go func(file string) {
 			defer wg.Done()
 
