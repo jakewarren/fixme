@@ -1,6 +1,6 @@
 # fixme
 
-[![GitHub release](http://img.shields.io/github/release/jakewarren/fixme.svg?style=flat-square)](https://github.com/jakewarren/fixme/releases])
+[![GitHub release](http://img.shields.io/github/release/jakewarren/fixme.svg?style=flat-square)](https://github.com/jakewarren/fixme/releases)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/jakewarren/fixme/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jakewarren/fixme)](https://goreportcard.com/report/github.com/jakewarren/fixme)
 
