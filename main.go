@@ -82,11 +82,12 @@ func main() {
 	}
 
 	fileList := getFiles(cleanPath)
+	results := make([]Result, len(fileList))
 
 	wg := sizedwaitgroup.New(runtime.NumCPU())
-	for _, file := range fileList {
+	for i, file := range fileList {
 		wg.Add()
-		go func(file string) {
+		go func(file string, i int) {
 			defer wg.Done()
 
 			//scan for comment tags within the file
@@ -95,12 +96,15 @@ func main() {
 				log.WithError(err).Errorf("Error processing %s", file)
 			}
 
-			//print results from the file
-			printMatches(result)
-		}(file)
+			results[i] = result
+		}(file, i)
 	}
 	wg.Wait()
 
+	for _, result := range results {
+		//print results from the file
+		printMatches(result)
+	}
 }
 
 func printMatches(result Result) {
