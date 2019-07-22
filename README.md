@@ -4,6 +4,8 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/jakewarren/fixme/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jakewarren/fixme)](https://goreportcard.com/report/github.com/jakewarren/fixme)
 
+![](logo.png)
+
 > Scan for NOTE, OPTIMIZE, TODO, HACK, XXX, FIXME, and BUG comments within your source, and print them to stdout so you can deal with them.
 
 ![](example.png)
