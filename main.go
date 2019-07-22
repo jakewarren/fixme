@@ -43,6 +43,7 @@ type match struct {
 var (
 	version         string
 	skipHidden      *bool
+	includeVendor   *bool
 	ignoreDirs      *[]string
 	ignoreExts      *[]string
 	lineLengthLimit *int
@@ -56,9 +57,10 @@ var (
 func main() {
 
 	app := kingpin.New("fixme", "Searches for comment tags in code")
-	filePath := app.Arg("file", "the file or directory to scan").Required().String()
+	filePath := app.Arg("file", "the file or directory to scan (default=current directory)").String()
 	skipHidden = app.Flag("skip-hidden", "skip hidden folders (default=true)").Default("true").PlaceHolder("true").Bool()
-	ignoreDirs = app.Flag("ignore-dir", "pattern of directories to ignore").Short('i').PlaceHolder("vendor").Strings()
+	includeVendor = app.Flag("include-vendor", "include vendor directory (default=false)").Default("false").PlaceHolder("false").Bool()
+	ignoreDirs = app.Flag("ignore-dir", "pattern of directories to ignore").Short('i').Default("vendor").Strings()
 	ignoreExts = app.Flag("ignore-exts", "pattern of file extensions to ignore").PlaceHolder(".txt").Strings()
 	lineLengthLimit = app.Flag("line-length-limit", "number of max characters in a line").Default("1000").Int()
 	logLvl := app.Flag("log-level", "log level (debug|info|error)").Short('l').Default("error").Enum("debug", "info", "error")
@@ -74,6 +76,22 @@ func main() {
 	//set up the regex values
 	matchers = initMatchers()
 	tagMatcher = ahocorasick.NewStringMatcher([]string{"NOTE", "OPTIMIZE", "TODO", "HACK", "XXX", "FIXME", "BUG"})
+
+	// if the user doesn't specify a directory assume the current directory
+	if len(*filePath) == 0 {
+		*filePath = "."
+	}
+
+	// since the vendor directory is ignored by default,
+	// ensure we remove the vendor directory from the list of ignored directories if the user wants it included
+	if *includeVendor {
+		for i, v := range *ignoreDirs {
+			if v == "vendor" {
+				*ignoreDirs = append((*ignoreDirs)[:i], (*ignoreDirs)[i+1:]...)
+				break
+			}
+		}
+	}
 
 	//get the files from the path the user specified
 	cleanPath, err := filepath.Abs(*filePath)
