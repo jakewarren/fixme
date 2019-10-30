@@ -337,37 +337,37 @@ func getFiles(filePath string) []string {
 func initMatchers() []matcher {
 	return []matcher{
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*NOTE\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*NOTE\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ✐ NOTE`,
 			Tag:   "NOTE",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*OPTIMIZE\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*OPTIMIZE\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ↻ OPTIMIZE`,
 			Tag:   "OPTIMIZE",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*TODO\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*TODO\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ✓ TODO`,
 			Tag:   "TODO",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*HACK\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*HACK\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ✄ HACK`,
 			Tag:   "HACK",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*XXX\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*XXX\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ✗ XXX`,
 			Tag:   "XXX",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*FIXME\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*FIXME\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: ` ☠ FIXME`,
 			Tag:   "FIXME",
 		},
 		{
-			Regex: `(?i)(?:[\/\/][\/\*]|#)\s*BUG\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
+			Regex: `(?i)(?:[\/\/][\/\*]|#|%)\s*BUG\b\s*(?:\(([^:]*)\))*\s*:?\s*(.*)`,
 			Label: `☢ BUG`,
 			Tag:   "BUG",
 		},
