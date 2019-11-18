@@ -57,6 +57,11 @@ Args:
 
 ```
 
+## Thanks to :heart:
+
+* [@xarantolus](https://github.com/xarantolus)
+* [@reidab](https://github.com/reidab)
+
 ## Maintainers
 
 [@jakewarren](https://github.com/jakewarren)
