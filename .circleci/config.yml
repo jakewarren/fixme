@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: "Run golangci-lint"
-          command: golangci-lint run --color always --enable-all --exclude-use-default -D godox -D gochecknoglobals -D gochecknoinits -D lll
+          command: golangci-lint run --color always --enable-all --exclude-use-default -D godox -D gochecknoglobals -D gochecknoinits -D lll -D funlen -D whitespace
   critic:
     docker:
       - image: jakewarren/gocritic:latest

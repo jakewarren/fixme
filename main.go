@@ -77,7 +77,7 @@ func main() {
 	tagMatcher = ahocorasick.NewStringMatcher([]string{"NOTE", "OPTIMIZE", "TODO", "HACK", "XXX", "FIXME", "BUG"})
 
 	// if the user doesn't specify a directory assume the current directory
-	if len(*filePath) == 0 {
+	if *filePath == "" {
 		*filePath = "."
 	}
 
@@ -261,7 +261,7 @@ func processFile(file string) (Result, error) {
 
 		// check the line with the MPM before running against regular expressions
 		hits := tagMatcher.Match([]byte(line))
-		if len(hits) <= 0 {
+		if len(hits) == 0 {
 			continue
 		}
 
@@ -271,7 +271,7 @@ func processFile(file string) (Result, error) {
 
 			if re.MatchString(line) {
 				// skip tags with an empty message
-				if len(re.FindStringSubmatch(line)[2]) <= 0 {
+				if len(re.FindStringSubmatch(line)[2]) == 0 {
 					continue
 				}
 				result.Matches = append(result.Matches, match{lineNumber, m.Tag, m.Label, re.FindStringSubmatch(line)[1], re.FindStringSubmatch(line)[2]})
