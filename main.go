@@ -18,20 +18,20 @@ import (
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
-//a matcher contains the regex for comment tags we are looking for
+// a matcher contains the regex for comment tags we are looking for
 type matcher struct {
 	Regex string
 	Label string
 	Tag   string
 }
 
-//Result holds data for all matches found in a file
+// Result holds data for all matches found in a file
 type Result struct {
 	Filename string
 	Matches  []match
 }
 
-//a match contains data for each comment tag found in a file
+// a match contains data for each comment tag found in a file
 type match struct {
 	lineNumber int
 	tag        string
@@ -55,7 +55,6 @@ var (
 )
 
 func main() {
-
 	app := kingpin.New("fixme", "Searches for comment tags in code")
 	filePath := app.Arg("file", "the file or directory to scan (default=current directory)").String()
 	skipHidden = app.Flag("skip-hidden", "skip hidden folders (default=true)").Default("true").PlaceHolder("true").Bool()
@@ -73,7 +72,7 @@ func main() {
 	log.SetHandler(cli.New(os.Stdout))
 	log.SetLevelFromString(*logLvl)
 
-	//set up the regex values
+	// set up the regex values
 	matchers = initMatchers()
 	tagMatcher = ahocorasick.NewStringMatcher([]string{"NOTE", "OPTIMIZE", "TODO", "HACK", "XXX", "FIXME", "BUG"})
 
@@ -93,7 +92,7 @@ func main() {
 		}
 	}
 
-	//get the files from the path the user specified
+	// get the files from the path the user specified
 	cleanPath, err := filepath.Abs(*filePath)
 	if err != nil {
 		log.WithError(err).Fatal("Error identifying files")
@@ -108,7 +107,7 @@ func main() {
 		go func(file string, i int) {
 			defer wg.Done()
 
-			//scan for comment tags within the file
+			// scan for comment tags within the file
 			result, err := processFile(file)
 			if err != nil {
 				log.WithError(err).Errorf("Error processing %s", file)
@@ -120,13 +119,13 @@ func main() {
 	wg.Wait()
 
 	for _, result := range results {
-		//print results from the file
+		// print results from the file
 		printMatches(result)
 	}
 }
 
 func printMatches(result Result) {
-	//acquire a lock to ensure our output is stable
+	// acquire a lock to ensure our output is stable
 	outputMux.Lock()
 	defer outputMux.Unlock()
 
@@ -238,8 +237,8 @@ func printMatches(result Result) {
 	}
 	fmt.Println()
 }
-func processFile(file string) (Result, error) {
 
+func processFile(file string) (Result, error) {
 	var result Result
 	result.Filename = file
 
@@ -255,23 +254,23 @@ func processFile(file string) (Result, error) {
 		line := scanner.Text()
 		lineNumber++
 
-		//skip if the line is too long
+		// skip if the line is too long
 		if len(line) > *lineLengthLimit {
 			continue
 		}
 
-		//check the line with the MPM before running against regular expressions
+		// check the line with the MPM before running against regular expressions
 		hits := tagMatcher.Match([]byte(line))
 		if len(hits) <= 0 {
 			continue
 		}
 
-		//check the line against the regexes
+		// check the line against the regexes
 		for _, m := range matchers {
-			var re = regexp.MustCompile(m.Regex)
+			re := regexp.MustCompile(m.Regex)
 
 			if re.MatchString(line) {
-				//skip tags with an empty message
+				// skip tags with an empty message
 				if len(re.FindStringSubmatch(line)[2]) <= 0 {
 					continue
 				}
@@ -285,23 +284,21 @@ func processFile(file string) (Result, error) {
 
 // getFiles returns a list of the files to be processed
 func getFiles(filePath string) []string {
-
 	fileList := []string{}
 	err := filepath.Walk(filePath, func(path string, f os.FileInfo, err error) error {
-
-		//catch any errors while walking the filepath
+		// catch any errors while walking the filepath
 		if err != nil {
 			return err
 		}
 
-		//skip hidden directories if the user requests it
+		// skip hidden directories if the user requests it
 		if *skipHidden {
 			if f.IsDir() && strings.HasPrefix(f.Name(), ".") {
 				return filepath.SkipDir
 			}
 		}
 
-		//skip any directories the user wants to ignore
+		// skip any directories the user wants to ignore
 		if len(*ignoreDirs) > 0 {
 			for _, dir := range *ignoreDirs {
 				if f.IsDir() && strings.HasPrefix(f.Name(), dir) {
@@ -310,7 +307,7 @@ func getFiles(filePath string) []string {
 			}
 		}
 
-		//skip any files with an extension the user wants to ignore
+		// skip any files with an extension the user wants to ignore
 		if len(*ignoreExts) > 0 {
 			for _, ext := range *ignoreExts {
 				if !f.IsDir() && strings.HasSuffix(f.Name(), ext) {
@@ -326,7 +323,6 @@ func getFiles(filePath string) []string {
 
 		return nil
 	})
-
 	if err != nil {
 		log.WithError(err).Fatal("failed getting file names")
 	}
