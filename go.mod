@@ -10,7 +10,7 @@ require (
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
 	github.com/apex/log v1.0.0
 	github.com/cloudflare/ahocorasick v0.0.0-20131126104932-1ce46e42b741
-	github.com/fatih/color v1.5.0
+	github.com/fatih/color v1.7.0
 	github.com/mattn/go-colorable v0.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.3 // indirect
 	github.com/pkg/errors v0.8.0 // indirect
