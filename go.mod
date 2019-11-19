@@ -18,5 +18,5 @@ require (
 	github.com/sergi/go-diff v1.0.0 // indirect
 	github.com/stretchr/testify v1.4.0 // indirect
 	golang.org/x/sys v0.0.0-20170927054621-314a259e304f // indirect
-	gopkg.in/alecthomas/kingpin.v2 v2.2.5
+	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
