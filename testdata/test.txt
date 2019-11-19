@@ -1,0 +1,7 @@
+//NOTE: test note 
+#OPTIMIZE: test optimize
+//TODO: test todo
+//HACK: test hack
+//XXX: test XXX
+//FIXME: test fixme
+//BUG: test bug

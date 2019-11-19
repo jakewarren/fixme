@@ -23,7 +23,7 @@ release: gox
 	@gox -osarch="darwin/386 darwin/amd64 linux/386 linux/amd64 windows/386 windows/amd64" ${LDFLAGS} -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 #Build a development build
-dev: 
+build:
 	@go build ${LDFLAGS_DEV} -o bin/${BINARY}
 
 #Install a release build on your local system
@@ -32,3 +32,10 @@ install: clean
 
 clean: 
 	@go clean -i
+
+test:
+	@go test -v -race ./...
+
+# update the golden files used for the integration tests
+update-tests:
+	@go test integration/cli_test.go -update
