@@ -8,7 +8,7 @@ require (
 	github.com/apex/log v1.1.1
 	github.com/cloudflare/ahocorasick v0.0.0-20131126104932-1ce46e42b741
 	github.com/fatih/color v1.13.0
-	github.com/remeh/sizedwaitgroup v0.0.0-20161123101944-4b44541c9359
+	github.com/remeh/sizedwaitgroup v1.0.0
 	github.com/stretchr/testify v1.4.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
