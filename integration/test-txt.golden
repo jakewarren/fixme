@@ -1,4 +1,4 @@
-• /home/jake/golang/src/github.com/jakewarren/fixme/testdata/test.txt [7 messages]:
+• testdata/test.txt [7 messages]:
  [Line 1]	  ✐ NOTE: test note 
  [Line 2]	  ↻ OPTIMIZE: test optimize
  [Line 3]	  ✓ TODO: test todo

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -27,22 +28,23 @@ type matcher struct {
 
 // Result holds data for all matches found in a file
 type Result struct {
-	Filename string
-	Matches  []match
+	Filename string  `json:"filename"`
+	Matches  []match `json:"matches"`
 }
 
 // a match contains data for each comment tag found in a file
 type match struct {
-	lineNumber int
-	tag        string
-	label      string
-	author     string
-	message    string
+	LineNumber int    `json:"lineNumber"`
+	Tag        string `json:"tag"`
+	Label      string `json:"label"`
+	Author     string `json:"author"`
+	Message    string `json:"message"`
 }
 
 var (
 	version         string
 	skipHidden      *bool
+	jsonOutput      *bool
 	includeVendor   *bool
 	ignoreDirs      *[]string
 	ignoreExts      *[]string
@@ -57,6 +59,7 @@ var (
 func main() {
 	app := kingpin.New("fixme", "Searches for comment tags in code")
 	filePath := app.Arg("file", "the file or directory to scan (default=current directory)").String()
+	jsonOutput = app.Flag("json", "output in JSON (default=false)").Short('j').Default("false").PlaceHolder("false").Bool()
 	skipHidden = app.Flag("skip-hidden", "skip hidden folders (default=true)").Default("true").PlaceHolder("true").Bool()
 	includeVendor = app.Flag("include-vendor", "include vendor directory (default=false)").Default("false").PlaceHolder("false").Bool()
 	ignoreDirs = app.Flag("ignore-dir", "pattern of directories to ignore").Short('i').Default("vendor").Strings()
@@ -118,9 +121,26 @@ func main() {
 	}
 	wg.Wait()
 
-	for _, result := range results {
-		// print results from the file
-		printMatches(result)
+	if *jsonOutput {
+		// acquire a lock to ensure our output is stable
+		outputMux.Lock()
+		defer outputMux.Unlock()
+
+		for _, result := range results {
+			if result.Matches == nil {
+				continue
+			}
+
+			if b, marshalErr := json.MarshalIndent(result, "", " "); marshalErr == nil {
+				fmt.Println(string(b))
+			}
+		}
+
+	} else {
+		for _, result := range results {
+			// print results from the file
+			printMatches(result)
+		}
 	}
 }
 
@@ -148,88 +168,88 @@ func printMatches(result Result) {
 
 	for _, m := range result.Matches {
 		color.Set(color.Faint)
-		fmt.Printf(" [Line %d]\t", m.lineNumber)
+		fmt.Printf(" [Line %d]\t", m.LineNumber)
 		color.Unset()
 
-		switch m.tag {
+		switch m.Tag {
 		case "NOTE":
 			color.Set(color.Bold, color.FgHiGreen)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgGreen)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "OPTIMIZE":
 			color.Set(color.Bold, color.FgHiBlue)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgBlue)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "TODO":
 			color.Set(color.Bold, color.FgHiMagenta)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgHiMagenta)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "HACK":
 			color.Set(color.Bold, color.FgHiYellow)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgYellow)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "XXX":
 			color.Set(color.Bold, color.FgHiCyan)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgCyan)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "FIXME":
 			color.Set(color.Bold, color.FgHiRed)
-			if len(m.author) > 0 {
-				fmt.Printf(" %s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf(" %s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf(" %s:", m.label)
+				fmt.Printf(" %s:", m.Label)
 			}
 			color.Unset()
 			color.Set(color.FgRed)
-			fmt.Printf(" %s\n", m.message)
+			fmt.Printf(" %s\n", m.Message)
 			color.Unset()
 		case "BUG":
 			fmt.Print("  ")
 			color.Set(color.Bold, color.FgWhite, color.BgRed)
-			if len(m.author) > 0 {
-				fmt.Printf("%s from %s:", m.label, m.author)
+			if len(m.Author) > 0 {
+				fmt.Printf("%s from %s:", m.Label, m.Author)
 			} else {
-				fmt.Printf("%s:", m.label)
+				fmt.Printf("%s:", m.Label)
 			}
 			color.Unset()
 			fmt.Print(" ")
 			color.Set(color.FgRed)
-			fmt.Printf("%s\n", m.message)
+			fmt.Printf("%s\n", m.Message)
 			color.Unset()
 			fmt.Println()
 		}
