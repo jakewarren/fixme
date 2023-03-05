@@ -32,7 +32,7 @@ Download the latest release from [https://github.com/jakewarren/fixme/releases](
 ### Option 2: From source
 
 ```
-go get github.com/jakewarren/fixme
+go install github.com/jakewarren/fixme@latest
 ```
 
 ## Usage
