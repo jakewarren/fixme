@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2023-03-05
+### Added
+- [#27](https://github.com/jakewarren/fixme/pull/26) Added support for JSON output
+
+### Changed
+- Migrated to Github Actions.
+- Expanded test suite to test the JSON output and to ensure author tags are displayed correctly.
+
 ## [1.3.0] - 2019-10-30
 ### Added
 - [#3](https://github.com/jakewarren/fixme/pull/3) Added support for LaTeX comments. Thanks [@xarantolus](https://github.com/xarantolus)! 
