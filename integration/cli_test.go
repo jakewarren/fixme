@@ -46,7 +46,7 @@ func loadFixture(t *testing.T, fixture string) string {
 
 // since the CI will likely have a different working path we need to massage the output a bit to remove the absolute path
 func cleanPath(input string) string {
-	pathRE := regexp.MustCompile(`(?m)^.+testdata/test\.txt`)
+	pathRE := regexp.MustCompile(`(?m)^.+testdata/test(-author)?\.txt`)
 	substitution := "testdata/test.txt"
 
 	return pathRE.ReplaceAllString(input, substitution)
@@ -59,6 +59,8 @@ func TestCliArgs(t *testing.T) {
 		fixture string
 	}{
 		{"test.txt", []string{"./testdata/test.txt"}, "test-txt.golden"},
+		{"test.txt JSON output", []string{"--json", "./testdata/test.txt"}, "test-txt-json.golden"},
+		{"test authors", []string{"./testdata/test-author.txt"}, "test-author-txt.golden"},
 	}
 
 	for _, tt := range tests {

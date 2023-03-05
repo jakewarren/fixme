@@ -1,0 +1,54 @@
+{
+ "filename": "testdata/test.txt",
+ "matches": [
+  {
+   "lineNumber": 1,
+   "tag": "NOTE",
+   "label": " ✐ NOTE",
+   "author": "",
+   "message": "test note "
+  },
+  {
+   "lineNumber": 2,
+   "tag": "OPTIMIZE",
+   "label": " ↻ OPTIMIZE",
+   "author": "",
+   "message": "test optimize"
+  },
+  {
+   "lineNumber": 3,
+   "tag": "TODO",
+   "label": " ✓ TODO",
+   "author": "",
+   "message": "test todo"
+  },
+  {
+   "lineNumber": 4,
+   "tag": "HACK",
+   "label": " ✄ HACK",
+   "author": "",
+   "message": "test hack"
+  },
+  {
+   "lineNumber": 5,
+   "tag": "XXX",
+   "label": " ✗ XXX",
+   "author": "",
+   "message": "test XXX"
+  },
+  {
+   "lineNumber": 6,
+   "tag": "FIXME",
+   "label": " ☠ FIXME",
+   "author": "",
+   "message": "test fixme"
+  },
+  {
+   "lineNumber": 7,
+   "tag": "BUG",
+   "label": "☢ BUG",
+   "author": "",
+   "message": "test bug"
+  }
+ ]
+}
